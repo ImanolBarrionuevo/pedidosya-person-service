@@ -7,8 +7,9 @@ export class PersonsController {
 
     constructor(private personsService: PersonsService){}
 
-    @Post("/person")
+    @Post()
     postPerson(@Body() createPersonDto:CreatePersonDto): string{
-        return this.personsService.createPerson(createPersonDto)
+        const personCreated = this.personsService.createPerson(createPersonDto)
+        return personCreated
     }
 }
