@@ -7,5 +7,5 @@ export class CreateProvinceDto{
 
     @IsNotEmpty({ message: 'El id de pais es obligatorio.' })
     @IsNumber({}, { message: 'El id debe ser un número.' })
-    countryId: number;
+    country: number;
 }

@@ -1,5 +1,5 @@
 import { IsString, IsEmail, IsNotEmpty, IsDate, IsNumber } from 'class-validator';
-import { Type } from 'class-transformer';
+import { Transform, Type } from 'class-transformer';
 
 export class CreatePersonDto {
   @IsNotEmpty({ message: 'El nombre es obligatorio.' })
@@ -17,5 +17,6 @@ export class CreatePersonDto {
 
   @IsNotEmpty({ message: 'El ID de la ciudad es obligatorio.' })
   @IsNumber({}, { message: 'El ID de la ciudad debe ser numérico.' })
-  cityId: number;
+  @Transform(({ value }) => ({ id: value }))
+  city: { id: number };
 }

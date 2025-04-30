@@ -1,41 +1,7 @@
 import { BaseEntity, Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { CityEntity } from './cities.entity';
 
-@Entity('Country')
-export class CountryEntity extends BaseEntity{
-    @PrimaryGeneratedColumn()
-    id:number
-
-    @Column()
-    name: string
-}
-
-@Entity('Province')
-export class ProvinceEntity extends BaseEntity{
-    @PrimaryGeneratedColumn()
-    id: number;
-
-    @Column()
-    name: string;
-
-    @ManyToOne(()=> CountryEntity, (country) => country.id)
-    @JoinColumn()
-    country: CountryEntity;
-}
-
-@Entity('City')
-export class CityEntity extends BaseEntity{
-    @PrimaryGeneratedColumn()
-    id: number;
-
-    @Column()
-    name: string;
-
-    @ManyToOne(()=> ProvinceEntity, (province) => province.id)
-    @JoinColumn()
-    province: ProvinceEntity;
-}
-
-@Entity('persons')
+@Entity('Persons')
 export class PersonsEntity extends BaseEntity {
     @PrimaryGeneratedColumn()
     id: number;
@@ -51,7 +17,7 @@ export class PersonsEntity extends BaseEntity {
 
     @ManyToOne(()=> CityEntity, (city) => city.id)
     @JoinColumn()
-    city: CityEntity;
+    cityId: CityEntity;
 }
 
 

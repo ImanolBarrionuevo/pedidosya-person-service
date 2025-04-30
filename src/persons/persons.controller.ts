@@ -1,4 +1,4 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { PersonsService } from './persons.service';
 import { CreatePersonDto } from './create-person.dto';
 
@@ -8,8 +8,17 @@ export class PersonsController {
     constructor(private personsService: PersonsService){}
 
     @Post()
-    postPerson(@Body() createPersonDto:CreatePersonDto): string{
-        const personCreated = this.personsService.createPerson(createPersonDto)
-        return personCreated
+    postPerson(@Body() createPersonDto:CreatePersonDto){
+        return this.personsService.createPerson(createPersonDto)  
+    }
+
+    @Get()
+    getAllPersons(){
+        return this.personsService.findAllPerson()
+    }
+
+    @Get(':id')
+    getPerson(@Param('id') idPerson:number){
+        return this.personsService.findPerson(idPerson)
     }
 }
