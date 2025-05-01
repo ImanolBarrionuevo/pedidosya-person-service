@@ -5,9 +5,9 @@ import { PersonsModule } from './persons/persons.module';
 import {TypeOrmModule} from '@nestjs/typeorm';
 import { entities } from './entities';
 import { CitiesModule } from './cities/cities.module';
-import { CityEntity } from './entities/cities.entity';
 import { CountriesModule } from './countries/countries.module';
 import { ProvincesModule } from './provinces/provinces.module';
+
 
 @Module({
   imports: [TypeOrmModule.forRoot({

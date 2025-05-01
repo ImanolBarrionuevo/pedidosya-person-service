@@ -1,6 +1,41 @@
-import { Controller } from '@nestjs/common';
+import { Controller, Param, Body, Post, Get, Put, Patch, Delete } from '@nestjs/common';
+import { CitiesService } from './cities.service';
+import { CreateCityDto } from './dto/create-city.dto';
+import { PatchCityDto } from './dto/patch-city.dto';
 
-@Controller('cities')
+@Controller('city')
 export class CitiesController {
-    
+
+    constructor(private citiesService:CitiesService){}
+
+    @Post()
+    postCity(@Body() city:CreateCityDto){
+        return this.citiesService.createCity(city)
+    }
+
+    @Get()
+    getAllCities(){
+        return this.citiesService.findAllCity()
+    }
+
+    @Get(':id')
+    getCity(@Param('id') id:number){
+        return this.citiesService.findCity(id)
+    }
+
+    @Put(':id')
+    putCity(@Param('id') id:number, @Body() updateCity:CreateCityDto){
+        return this.citiesService.updateCity(id,updateCity)
+    }
+
+    @Patch(':id')
+    patchCity(@Param('id') id:number, @Body() updateCity:PatchCityDto){
+        return this.citiesService.partialUpdateCity(id,updateCity)
+    }
+
+    @Delete(':id')
+    deleteCity(@Param('id') id:number){
+        return this.citiesService.deleteCity(id)
+    }
+
 }
