@@ -1,5 +1,5 @@
 import { BaseEntity, Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
-import { CountryEntity } from './countries.entity';
+import { CountriesEntity } from './countries.entity';
 
 @Entity('Provinces')
 export class ProvinceEntity extends BaseEntity{
@@ -9,7 +9,7 @@ export class ProvinceEntity extends BaseEntity{
     @Column()
     name: string;
 
-    @ManyToOne(()=> CountryEntity, (country) => country.id)
+    @ManyToOne(()=> CountriesEntity, (country) => country.id)
     @JoinColumn()
-    countryId: CountryEntity;
+    countryId: CountriesEntity;
 }

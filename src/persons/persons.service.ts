@@ -3,6 +3,7 @@ import { CreatePersonDto } from './create-person.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { PersonsEntity } from 'src/entities/persons.entity';
 import { Repository } from 'typeorm';
+import { UpdatePersonDto } from './patch-person.dto';
 
 @Injectable()
 export class PersonsService {
@@ -27,7 +28,33 @@ export class PersonsService {
             where: { id: id},
             relations: ['cityId', 'cityId.provinceId', 'cityId.provinceId.countryId'],
         });
+        if (!person) {
+            throw new NotFoundException("Persona no encontrada");
+        }
         return person
+    }
+    async updatePerson(id: number, updatePerson:CreatePersonDto){
+        await this.personsRepository.update(id, updatePerson)
+        return this.findPerson(id)
+    }
+
+    async partialUpdatePerson(id: number, updatePerson:UpdatePersonDto){
+        const person = await this.personsRepository.findOne({where: {id:id}})
+        if (!person) {
+            throw new NotFoundException("Persona no encontrada");
+        }
+
+        Object.keys(updatePerson).forEach(column => {
+            person[column] = updatePerson[column];
+        })
+
+        await this.personsRepository.update(id, person)
+        return person
+    }
+
+    async deletePerson(id:number){
+        await this.personsRepository.delete(id);
+        return {"message": "deleted"}
     }
     
 }

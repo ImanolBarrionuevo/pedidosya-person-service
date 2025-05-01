@@ -1,8 +1,9 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Put, Patch, Delete } from '@nestjs/common';
 import { PersonsService } from './persons.service';
 import { CreatePersonDto } from './create-person.dto';
+import { UpdatePersonDto } from './patch-person.dto';
 
-@Controller('persons')
+@Controller('person')
 export class PersonsController {
 
     constructor(private personsService: PersonsService){}
@@ -21,4 +22,20 @@ export class PersonsController {
     getPerson(@Param('id') idPerson:number){
         return this.personsService.findPerson(idPerson)
     }
+
+    @Put(':id')
+    putPerson(@Param('id') idPerson:number, @Body() updatePerson:CreatePersonDto){
+        return this.personsService.updatePerson(idPerson, updatePerson)
+    }
+
+    @Patch(':id')
+    patchPerson(@Param('id') idPerson:number, @Body()partialUpdatePerson:UpdatePersonDto){
+        return this.personsService.partialUpdatePerson(idPerson, partialUpdatePerson)
+    }
+
+    @Delete(':id')
+    deletePerson(@Param('id') idPerson:number){
+        return this.personsService.deletePerson(idPerson)
+    }
+    
 }
