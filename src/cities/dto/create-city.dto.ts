@@ -8,5 +8,5 @@ export class CreateCityDto{
     @IsDefined({message: 'El id de provincia es obligatorio.'}) 
     @IsNotEmpty({ message: 'El id de provincia no puede estar vacio.' })
     @IsNumber({}, { message: 'El id debe ser un número.' })
-    province: { id: number };
+    provinceId: {id: number};
 }

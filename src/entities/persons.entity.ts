@@ -17,7 +17,7 @@ export class PersonsEntity extends BaseEntity {
 
     @ManyToOne(()=> CityEntity, (city) => city.id)
     @JoinColumn()
-    cityId: CityEntity;
+    city: CityEntity;
 }
 
 

@@ -11,5 +11,5 @@ export class ProvinceEntity extends BaseEntity{
 
     @ManyToOne(()=> CountriesEntity, (country) => country.id)
     @JoinColumn()
-    countryId: CountriesEntity;
+    country: CountriesEntity;
 }
