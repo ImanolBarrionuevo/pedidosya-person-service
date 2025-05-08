@@ -1,5 +1,5 @@
-import { Type, Transform } from "class-transformer";
-import { IsString, IsNotEmpty, IsEmail, IsDate, IsNumber } from "class-validator";
+import { Type} from "class-transformer";
+import { IsString, IsEmail, IsDate, IsNumber } from "class-validator";
 
 export class UpdatePersonDto{
     @IsString({ message: 'El nombre debe ser un texto.' })
@@ -13,7 +13,6 @@ export class UpdatePersonDto{
     birthDate?: Date;
 
     @IsNumber({}, { message: 'El ID de la ciudad debe ser numérico.' })
-    @Transform(({ value }) => ({ id: value }))
     city?: { id: number };
 }
 
