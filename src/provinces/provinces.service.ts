@@ -19,14 +19,14 @@ export class ProvincesService {
     }
 
     async findAllProvince(){
-        const provinces = await this.provincesRepository.find({relations: ['countryId']})
+        const provinces = await this.provincesRepository.find({relations: ['country']})
         return provinces
     }
 
     async findProvince(id: number){
         const province = await this.provincesRepository.findOne({
             where: { id: id},
-            relations: ['countryId'],
+            relations: ['country'],
         });
         if (!province) {
             throw new NotFoundException("Provincia no encontrada");

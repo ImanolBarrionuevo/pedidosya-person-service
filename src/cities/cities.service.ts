@@ -17,14 +17,14 @@ export class CitiesService {
     }
 
     async findAllCity(){
-        const cities = await this.citiesRepository.find({relations: ["provinceId", "provinceId.countryId"]})
+        const cities = await this.citiesRepository.find({relations: ["province", "province.country"]})
         return cities
     }
 
     async findCity(id:number){
         const city = await this.citiesRepository.findOne({
             where: {id:id}, 
-            relations: ["provinceId", "provinceId.countryId"]
+            relations: ["province", "province.country"]
         })
         if (!city){
             throw new NotFoundException("Ciudad no encontrada")

@@ -16,7 +16,7 @@ export class CreatePersonDto {
   birthDate: Date;
 
   @IsNotEmpty({ message: 'El ID de la ciudad es obligatorio.' })
-  @IsNumber({}, { message: 'El ID de la ciudad debe ser numérico.' })
+  //@IsNumber({}, { message: 'El ID de la ciudad debe ser numérico.' })
   @Transform(({ value }) => ({ id: value }))
-  cityId: { id: number };
+  city: { id: number }; 
 }

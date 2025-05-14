@@ -18,7 +18,7 @@ export class PersonsService {
 
     async findAllPerson(){
         const allPersons = await this.personsRepository.find({
-            relations: ['cityId', 'cityId.provinceId', 'cityId.provinceId.countryId'],
+            relations: ['city', 'city.province', 'city.province.country'],
         });
         return allPersons
     }
@@ -26,7 +26,7 @@ export class PersonsService {
     async findPerson(id: number){
         const person = await this.personsRepository.findOne({
             where: { id: id},
-            relations: ['cityId', 'cityId.provinceId', 'cityId.provinceId.countryId'],
+            relations: ['city', 'city.province', 'city.province.country'],
         });
         if (!person) {
             throw new NotFoundException("Persona no encontrada");
