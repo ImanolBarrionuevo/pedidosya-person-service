@@ -18,7 +18,7 @@ export class CountriesController {
         return this.countriesService.findCities(paginationDto)
     }
 
-    @Get()
+    @Get('all')
     getAllCountries(){
         return this.countriesService.findAllCountries()
     }
