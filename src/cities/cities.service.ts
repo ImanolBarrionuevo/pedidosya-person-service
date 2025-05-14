@@ -4,6 +4,7 @@ import { CityEntity } from 'src/entities/cities.entity';
 import { Repository } from 'typeorm';
 import { CreateCityDto } from './dto/create-city.dto';
 import { PatchCityDto } from './dto/patch-city.dto';
+import { PaginationDto } from './dto/pagination-city.dto';
 
 @Injectable()
 export class CitiesService {
@@ -19,6 +20,17 @@ export class CitiesService {
     async findAllCity(){
         const cities = await this.citiesRepository.find({relations: ["province", "province.country"]})
         return cities
+    }
+
+    async findCities(paginationDto: PaginationDto){
+
+        const currentPage = paginationDto.page ?? 1
+        const perPage = paginationDto.limit ?? 10
+
+        return await this.citiesRepository.find({
+            skip: (currentPage - 1) * perPage,
+            take: perPage
+        })
     }
 
     async findCity(id:number){

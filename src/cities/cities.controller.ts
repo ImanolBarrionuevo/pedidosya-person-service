@@ -1,7 +1,8 @@
-import { Controller, Param, Body, Post, Get, Put, Patch, Delete } from '@nestjs/common';
+import { Controller, Param, Body, Post, Get, Put, Patch, Delete, Query } from '@nestjs/common';
 import { CitiesService } from './cities.service';
 import { CreateCityDto } from './dto/create-city.dto';
 import { PatchCityDto } from './dto/patch-city.dto';
+import { PaginationDto } from './dto/pagination-city.dto';
 
 @Controller('city')
 export class CitiesController {
@@ -14,9 +15,14 @@ export class CitiesController {
     }
 
     @Get()
+    getCities(@Query() paginationDto: PaginationDto){
+        return this.citiesService.findCities(paginationDto)
+    }
+
+    @Get('all')
     getAllCities(){
         return this.citiesService.findAllCity()
-    }
+    }  
 
     @Get(':id')
     getCity(@Param('id') id:number){

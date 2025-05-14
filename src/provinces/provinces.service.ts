@@ -6,6 +6,7 @@ import { Repository } from 'typeorm';
 import { CreateProvinceDto } from './dto/create-province.dto';
 import { find } from 'rxjs';
 import { PatchProvinceDto } from './dto/patch-province.dto';
+import { PaginationDto } from './dto/pagination-country.dto';
 
 @Injectable()
 export class ProvincesService {
@@ -21,6 +22,17 @@ export class ProvincesService {
     async findAllProvince(){
         const provinces = await this.provincesRepository.find({relations: ['country']})
         return provinces
+    }
+
+    async findProvinces(paginationDto: PaginationDto){
+    
+        const currentPage = paginationDto.page ?? 1
+        const perPage = paginationDto.limit ?? 10
+
+        return await this.provincesRepository.find({
+            skip: (currentPage - 1) * perPage,
+            take: perPage
+        })
     }
 
     async findProvince(id: number){

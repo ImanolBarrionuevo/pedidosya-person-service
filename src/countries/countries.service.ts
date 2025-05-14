@@ -3,6 +3,7 @@ import { CreateCountryDto } from './dto/create-country.dto';
 import { CountriesEntity } from 'src/entities/countries.entity';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm/dist/common';
+import { PaginationDto } from './dto/pagination-country.dto';
 
 @Injectable()
 export class CountriesService {
@@ -18,6 +19,17 @@ export class CountriesService {
     async findAllCountries(){
         const countries = await this.countriesRepository.find()
         return countries
+    }
+
+    async findCities(paginationDto: PaginationDto){
+    
+        const currentPage = paginationDto.page ?? 1
+        const perPage = paginationDto.limit ?? 10
+
+        return await this.countriesRepository.find({
+            skip: (currentPage - 1) * perPage,
+            take: perPage
+        })
     }
 
     async findCountry(id: number){

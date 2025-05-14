@@ -4,6 +4,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { PersonsEntity } from 'src/entities/persons.entity';
 import { Repository } from 'typeorm';
 import { UpdatePersonDto } from './dto/patch-person.dto';
+import { PaginationDto } from './dto/pagination-person.dto';
 
 @Injectable()
 export class PersonsService {
@@ -21,6 +22,17 @@ export class PersonsService {
             relations: ['city', 'city.province', 'city.province.country'],
         });
         return allPersons
+    }
+
+    async findPersons(paginationDto: PaginationDto){
+    
+        const currentPage = paginationDto.page ?? 1
+        const perPage = paginationDto.limit ?? 10
+
+        return await this.personsRepository.find({
+            skip: (currentPage - 1) * perPage,
+            take: perPage
+        })
     }
 
     async findPerson(id: number){

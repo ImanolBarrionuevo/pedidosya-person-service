@@ -1,6 +1,7 @@
-import { Body, Param, Controller, Post, Get, Put, Patch, Delete } from '@nestjs/common';
+import { Body, Param, Controller, Post, Get, Put, Patch, Delete, Query } from '@nestjs/common';
 import { CountriesService } from './countries.service';
 import { CreateCountryDto } from './dto/create-country.dto';
+import { PaginationDto } from './dto/pagination-country.dto';
 
 @Controller('country')
 export class CountriesController {
@@ -10,6 +11,11 @@ export class CountriesController {
     @Post()
     postCountries(@Body() country:CreateCountryDto){
         return this.countriesService.createCountry(country)
+    }
+
+    @Get()
+    getCities(@Query() paginationDto: PaginationDto){
+        return this.countriesService.findCities(paginationDto)
     }
 
     @Get()
