@@ -18,10 +18,6 @@ export class CountriesController {
         return this.countriesService.findCities(paginationDto)
     }
 
-    @Get('all')
-    getAllCountries(){
-        return this.countriesService.findAllCountries()
-    }
 
     @Get(':id')
     getCountry(@Param('id') idCountry:number){

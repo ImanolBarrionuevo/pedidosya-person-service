@@ -19,11 +19,6 @@ export class ProvincesController {
         return this.provincesService.findProvinces(paginationDto)
     }
 
-    @Get('all')
-    getAllProvince(){
-        return this.provincesService.findAllProvince()
-    }
-
     @Get(':id')
     getProvince(@Param('id') id:number){
         return this.provincesService.findProvince(id)

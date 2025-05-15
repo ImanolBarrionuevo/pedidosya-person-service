@@ -26,7 +26,10 @@ export class ProvincesService {
 
     async findProvinces(paginationDto: PaginationDto){
     
-        const currentPage = paginationDto.page ?? 1
+        const currentPage = paginationDto.page
+        if(!currentPage){
+            return this.findAllProvince()
+        }
         const perPage = paginationDto.limit ?? 10
 
         return await this.provincesRepository.find({

@@ -23,7 +23,10 @@ export class CountriesService {
 
     async findCities(paginationDto: PaginationDto){
     
-        const currentPage = paginationDto.page ?? 1
+        const currentPage = paginationDto.page
+        if(!currentPage){
+            return this.findAllCountries()
+        }
         const perPage = paginationDto.limit ?? 10
 
         return await this.countriesRepository.find({

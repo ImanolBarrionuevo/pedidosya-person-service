@@ -26,7 +26,10 @@ export class PersonsService {
 
     async findPersons(paginationDto: PaginationDto){
     
-        const currentPage = paginationDto.page ?? 1
+        const currentPage = paginationDto.page
+        if(!currentPage){
+            return this.findAllPerson()
+        }
         const perPage = paginationDto.limit ?? 10
 
         return await this.personsRepository.find({

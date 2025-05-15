@@ -19,10 +19,7 @@ export class CitiesController {
         return this.citiesService.findCities(paginationDto)
     }
 
-    @Get('all')
-    getAllCities(){
-        return this.citiesService.findAllCity()
-    }  
+ 
 
     @Get(':id')
     getCity(@Param('id') id:number){

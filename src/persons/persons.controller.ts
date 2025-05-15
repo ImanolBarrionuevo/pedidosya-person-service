@@ -19,11 +19,6 @@ export class PersonsController {
         return this.personsService.findPersons(paginationDto)
     }
 
-    @Get('all')
-    getAllPersons(){
-        return this.personsService.findAllPerson()
-    }
-
     @Get(':id')
     getPerson(@Param('id') idPerson:number){
         return this.personsService.findPerson(idPerson)
