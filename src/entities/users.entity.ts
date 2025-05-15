@@ -1,8 +1,7 @@
-import { UserI } from '../interfaces/user.interface';
 import { BaseEntity, Column, Entity, Index, PrimaryGeneratedColumn } from 'typeorm';
 
-@Entity('users')
-export class UserEntity extends BaseEntity implements UserI {
+@Entity('Users')
+export class UserEntity extends BaseEntity{
   @PrimaryGeneratedColumn()
   id: number;
   @Index({unique:true})
