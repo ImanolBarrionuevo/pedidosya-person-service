@@ -1,7 +1,7 @@
-import { Type} from "class-transformer";
+import { Type } from "class-transformer";
 import { IsString, IsEmail, IsDate, IsNumber } from "class-validator";
 
-export class UpdatePersonDto{
+export class UpdatePersonDto {
     @IsString({ message: 'El nombre debe ser un texto.' })
     name?: string;
 
