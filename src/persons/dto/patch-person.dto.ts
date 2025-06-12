@@ -1,7 +1,9 @@
+import { PartialType } from "@nestjs/mapped-types";
 import { Type } from "class-transformer";
 import { IsString, IsEmail, IsDate, IsNumber } from "class-validator";
+import { CreatePersonDto } from "./create-person.dto";
 
-export class UpdatePersonDto {
+export class UpdatePersonDto extends PartialType(CreatePersonDto) {
     @IsString({ message: 'El nombre debe ser un texto.' })
     name?: string;
 

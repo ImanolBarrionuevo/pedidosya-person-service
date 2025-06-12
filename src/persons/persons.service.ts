@@ -5,29 +5,31 @@ import { PersonsEntity } from 'src/entities/persons.entity';
 import { Repository } from 'typeorm';
 import { UpdatePersonDto } from './dto/patch-person.dto';
 import { PaginationDto } from './dto/pagination-person.dto';
+import { CityEntity } from 'src/entities/cities.entity';
 
 @Injectable()
 export class PersonsService {
 
-    constructor(@InjectRepository(PersonsEntity) private personsRepository: Repository<PersonsEntity>){}
+    constructor(@InjectRepository(PersonsEntity) private personsRepository: Repository<PersonsEntity>,
+        @InjectRepository(CityEntity) private citiesRepository: Repository<CityEntity>) { }
 
-    async createPerson(person:CreatePersonDto){
+    async createPerson(person: CreatePersonDto) {
         const newPerson = this.personsRepository.create(person)
         await this.personsRepository.insert(newPerson)
         return await this.findPerson(newPerson.id)
     }
 
-    async findAllPerson(){
+    async findAllPerson() {
         const allPersons = await this.personsRepository.find({
             relations: ['city', 'city.province', 'city.province.country'],
         });
         return allPersons
     }
 
-    async findPersons(paginationDto: PaginationDto){
-    
+    async findPersons(paginationDto: PaginationDto) {
+
         const currentPage = paginationDto.page
-        if(!currentPage){
+        if (!currentPage) {
             return this.findAllPerson()
         }
         const perPage = paginationDto.limit ?? 10
@@ -38,9 +40,9 @@ export class PersonsService {
         })
     }
 
-    async findPerson(id: number){
+    async findPerson(id: number) {
         const person = await this.personsRepository.findOne({
-            where: { id: id},
+            where: { id: id },
             relations: ['city', 'city.province', 'city.province.country'],
         });
         if (!person) {
@@ -48,28 +50,42 @@ export class PersonsService {
         }
         return person
     }
-    async updatePerson(id: number, updatePerson:CreatePersonDto){
+    async updatePerson(id: number, updatePerson: CreatePersonDto) {
         await this.personsRepository.update(id, updatePerson)
         return this.findPerson(id)
     }
 
-    async partialUpdatePerson(id: number, updatePerson:UpdatePersonDto){
-        const person = await this.personsRepository.findOne({where: {id:id}})
+    async partialUpdatePerson(id: number, updatePersonDto: UpdatePersonDto) {
+        const person = await this.personsRepository.findOne({ where: { id: id } })
         if (!person) {
             throw new NotFoundException("Persona no encontrada");
         }
+        if (updatePersonDto.city) {
+            const cityEntity = await this.citiesRepository.findOne({ where: { id: updatePersonDto.city.id } });
+            if (cityEntity) {
+                person.city = cityEntity;
+            }
+        }
 
-        Object.keys(updatePerson).forEach(column => {
-            person[column] = updatePerson[column];
-        })
+        // Actualiza las propiedades simples que el DTO puede tener.
+        // Puedes usar Object.assign para las propiedades simples que no sean relaciones.
+        Object.assign(person, updatePersonDto);
 
-        await this.personsRepository.update(id, person)
-        return person
+        // Guarda la entidad completa para que se actualicen tanto columnas simples como relaciones.
+        const updatedUser = await this.personsRepository.save(person);
+        return updatedUser;
+
+        //Object.keys(updatePerson).forEach(column => {
+        //    person[column] = updatePerson[column];
+        //})
+
+        //await this.personsRepository.update(id, person)
+        //return person
     }
 
-    async deletePerson(id:number){
+    async deletePerson(id: number) {
         await this.personsRepository.delete(id);
-        return {"message": "deleted"}
+        return { "message": "deleted" }
     }
-    
+
 }
