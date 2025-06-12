@@ -1,15 +1,15 @@
 import { BaseEntity, Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
-import { ProvinceEntity } from './provinces.entity';
+import { ProvincesEntity } from './provinces.entity';
 
 @Entity('Cities')
-export class CityEntity extends BaseEntity{
+export class CitiesEntity extends BaseEntity {
     @PrimaryGeneratedColumn()
     id: number;
 
     @Column()
     name: string;
- 
-    @ManyToOne(()=> ProvinceEntity, (province) => province.id)
+
+    @ManyToOne(() => ProvincesEntity, (province) => province.id)
     @JoinColumn()
-    province: ProvinceEntity;
+    province: ProvincesEntity;
 }

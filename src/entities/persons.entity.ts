@@ -1,5 +1,5 @@
 import { BaseEntity, Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
-import { CityEntity } from './cities.entity';
+import { CitiesEntity } from './cities.entity';
 
 @Entity('Persons')
 export class PersonsEntity extends BaseEntity {
@@ -12,12 +12,12 @@ export class PersonsEntity extends BaseEntity {
     @Column()
     email: string;
 
-    @Column({type: 'date'})
+    @Column({ type: 'date' })
     birthDate: Date;
 
-    @ManyToOne(()=> CityEntity, (city) => city.id)
+    @ManyToOne(() => CitiesEntity, (city) => city.id)
     @JoinColumn()
-    city: CityEntity;
+    city: CitiesEntity;
 }
 
 

@@ -5,13 +5,13 @@ import { PersonsEntity } from 'src/entities/persons.entity';
 import { Repository } from 'typeorm';
 import { UpdatePersonDto } from './dto/patch-person.dto';
 import { PaginationDto } from './dto/pagination-person.dto';
-import { CityEntity } from 'src/entities/cities.entity';
+import { CitiesEntity } from 'src/entities/cities.entity';
 
 @Injectable()
 export class PersonsService {
 
     constructor(@InjectRepository(PersonsEntity) private personsRepository: Repository<PersonsEntity>,
-        @InjectRepository(CityEntity) private citiesRepository: Repository<CityEntity>) { }
+        @InjectRepository(CitiesEntity) private citiesRepository: Repository<CitiesEntity>) { }
 
     async createPerson(person: CreatePersonDto) {
         const newPerson = this.personsRepository.create(person)
@@ -66,7 +66,6 @@ export class PersonsService {
                 person.city = cityEntity;
             }
         }
-
         // Actualiza las propiedades simples que el DTO puede tener.
         // Puedes usar Object.assign para las propiedades simples que no sean relaciones.
         Object.assign(person, updatePersonDto);
@@ -74,13 +73,6 @@ export class PersonsService {
         // Guarda la entidad completa para que se actualicen tanto columnas simples como relaciones.
         const updatedUser = await this.personsRepository.save(person);
         return updatedUser;
-
-        //Object.keys(updatePerson).forEach(column => {
-        //    person[column] = updatePerson[column];
-        //})
-
-        //await this.personsRepository.update(id, person)
-        //return person
     }
 
     async deletePerson(id: number) {

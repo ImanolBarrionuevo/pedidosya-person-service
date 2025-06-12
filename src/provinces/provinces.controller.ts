@@ -1,41 +1,41 @@
 import { Controller, Param, Body, Post, Get, Put, Patch, Delete, Query } from '@nestjs/common';
 import { ProvincesService } from './provinces.service';
 import { CreateProvinceDto } from './dto/create-province.dto';
-import { PatchProvinceDto } from './dto/patch-province.dto';
+import { UpdateProvinceDto } from './dto/patch-province.dto';
 import { PaginationDto } from './dto/pagination-country.dto';
 
 @Controller('province')
 export class ProvincesController {
 
-    constructor(private provincesService: ProvincesService){}
+    constructor(private provincesService: ProvincesService) { }
 
     @Post()
-    postProvince(@Body() province: CreateProvinceDto){
+    postProvince(@Body() province: CreateProvinceDto) {
         return this.provincesService.createProvince(province)
     }
 
     @Get()
-    getCities(@Query() paginationDto: PaginationDto){
+    getCities(@Query() paginationDto: PaginationDto) {
         return this.provincesService.findProvinces(paginationDto)
     }
 
     @Get(':id')
-    getProvince(@Param('id') id:number){
+    getProvince(@Param('id') id: number) {
         return this.provincesService.findProvince(id)
     }
 
     @Put(':id')
-    putProvince(@Param('id') id:number, @Body() updateProvince:CreateProvinceDto){
+    putProvince(@Param('id') id: number, @Body() updateProvince: CreateProvinceDto) {
         return this.provincesService.updateProvince(id, updateProvince)
     }
 
     @Patch(':id')
-    patchProvince(@Param('id') id:number, @Body() updateProvince: PatchProvinceDto){
+    patchProvince(@Param('id') id: number, @Body() updateProvince: UpdateProvinceDto) {
         return this.provincesService.partialUpdateProvince(id, updateProvince)
     }
 
     @Delete(':id')
-    deleteProvince(@Param('id') id:number){
+    deleteProvince(@Param('id') id: number) {
         return this.provincesService.deleteProvince(id)
     }
 

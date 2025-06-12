@@ -2,14 +2,14 @@ import { BaseEntity, Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColu
 import { CountriesEntity } from './countries.entity';
 
 @Entity('Provinces')
-export class ProvinceEntity extends BaseEntity{
+export class ProvincesEntity extends BaseEntity {
     @PrimaryGeneratedColumn()
     id: number;
 
     @Column()
     name: string;
 
-    @ManyToOne(()=> CountriesEntity, (country) => country.id)
+    @ManyToOne(() => CountriesEntity, (country) => country.id)
     @JoinColumn()
     country: CountriesEntity;
 }

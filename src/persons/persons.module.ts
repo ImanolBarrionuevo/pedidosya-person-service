@@ -3,10 +3,10 @@ import { PersonsService } from './persons.service';
 import { PersonsController } from './persons.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { PersonsEntity } from 'src/entities/persons.entity';
-import { CityEntity } from 'src/entities/cities.entity';
+import { CitiesEntity } from 'src/entities/cities.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([PersonsEntity, CityEntity])],
+  imports: [TypeOrmModule.forFeature([PersonsEntity, CitiesEntity])],
   providers: [PersonsService],
   controllers: [PersonsController]
 })
