@@ -4,41 +4,53 @@ import { CreatePersonDto } from './dto/create-person.dto';
 import { UpdatePersonDto } from './dto/patch-person.dto';
 import { PaginationDto } from 'src/common/dto/pagination.dto';
 import { PermissionsDecorator } from 'src/common/permissions.decorator';
+import { Permissions } from 'src/common/permissions.enum';
 
 @Controller('person')
 export class PersonsController {
 
-    constructor(private personsService: PersonsService){}
+    constructor(private personsService: PersonsService) { }
 
     @Post()
+<<<<<<< HEAD
     @PermissionsDecorator() //Implementar esto en todas las rutas
     postPerson(@Body() createPersonDto:CreatePersonDto){
         return this.personsService.createPerson(createPersonDto)  
+=======
+    @PermissionsDecorator(Permissions.CreatePerson)
+    postPerson(@Body() createPersonDto: CreatePersonDto) {
+        return this.personsService.createPerson(createPersonDto)
+>>>>>>> 513278c4b512443aef0518299418253e7b9d9312
     }
 
     @Get()
-    getCities(@Query() paginationDto: PaginationDto){
+    @PermissionsDecorator(Permissions.ReadPerson)
+    getCities(@Query() paginationDto: PaginationDto) {
         return this.personsService.findPersons(paginationDto)
     }
 
     @Get(':id')
-    getPerson(@Param('id') idPerson:number){
+    @PermissionsDecorator(Permissions.ReadPerson)
+    getPerson(@Param('id') idPerson: number) {
         return this.personsService.findPerson(idPerson)
     }
 
     @Put(':id')
-    putPerson(@Param('id') idPerson:number, @Body() updatePerson:CreatePersonDto){
+    @PermissionsDecorator(Permissions.ModifyPerson)
+    putPerson(@Param('id') idPerson: number, @Body() updatePerson: CreatePersonDto) {
         return this.personsService.updatePerson(idPerson, updatePerson)
     }
 
     @Patch(':id')
-    patchPerson(@Param('id') idPerson:number, @Body()partialUpdatePerson:UpdatePersonDto){
+    @PermissionsDecorator(Permissions.ModifyPerson)
+    patchPerson(@Param('id') idPerson: number, @Body() partialUpdatePerson: UpdatePersonDto) {
         return this.personsService.partialUpdatePerson(idPerson, partialUpdatePerson)
     }
 
     @Delete(':id')
-    deletePerson(@Param('id') idPerson:number){
+    @PermissionsDecorator(Permissions.DeletePerson)
+    deletePerson(@Param('id') idPerson: number) {
         return this.personsService.deletePerson(idPerson)
     }
-    
+
 }
