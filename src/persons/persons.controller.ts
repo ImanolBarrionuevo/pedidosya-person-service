@@ -12,15 +12,9 @@ export class PersonsController {
     constructor(private personsService: PersonsService) { }
 
     @Post()
-<<<<<<< HEAD
-    @PermissionsDecorator() //Implementar esto en todas las rutas
-    postPerson(@Body() createPersonDto:CreatePersonDto){
-        return this.personsService.createPerson(createPersonDto)  
-=======
     @PermissionsDecorator(Permissions.CreatePerson)
     postPerson(@Body() createPersonDto: CreatePersonDto) {
         return this.personsService.createPerson(createPersonDto)
->>>>>>> 513278c4b512443aef0518299418253e7b9d9312
     }
 
     @Get()

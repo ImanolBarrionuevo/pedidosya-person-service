@@ -27,7 +27,7 @@ import { APP_GUARD } from '@nestjs/core';
   TypeOrmModule.forFeature(entities),
   PersonsModule, CitiesModule, CountriesModule, ProvincesModule,
   HttpModule.register({ 
-    baseURL: 'http://auth:3001', 
+    baseURL: 'http://localhost:3001/auth', 
     timeout: 3000 
   })],
   controllers: [AppController],

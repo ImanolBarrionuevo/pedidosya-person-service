@@ -42,7 +42,7 @@ export class PermissionsGuard implements CanActivate {
 
       if (!data.allowed) {
         throw new ForbiddenException(
-          'Acceso denegado: faltan permisos[${ requiredPerms.join(', ') }]',
+          `Acceso denegado: faltan permisos[${ requiredPerms.join(', ') }]`,
         );
       }
       return true;
