@@ -2,7 +2,7 @@ import { Controller, Param, Body, Post, Get, Put, Patch, Delete, Query } from '@
 import { ProvincesService } from './provinces.service';
 import { CreateProvinceDto } from './dto/create-province.dto';
 import { UpdateProvinceDto } from './dto/patch-province.dto';
-import { PaginationDto } from 'src/dto/pagination.dto';
+import { PaginationDto } from 'src/common/dto/pagination.dto';
 
 @Controller('province')
 export class ProvincesController {

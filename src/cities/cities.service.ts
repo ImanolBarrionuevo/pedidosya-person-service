@@ -5,7 +5,7 @@ import { Repository } from 'typeorm';
 import { CreateCityDto } from './dto/create-city.dto';
 import { UpdateCityDto } from './dto/patch-city.dto';
 import { ProvincesEntity } from 'src/entities/provinces.entity';
-import { PaginationDto } from 'src/dto/pagination.dto';
+import { PaginationDto } from 'src/common/dto/pagination.dto';
 
 @Injectable()
 export class CitiesService {

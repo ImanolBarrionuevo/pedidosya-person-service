@@ -2,7 +2,7 @@ import { Controller, Param, Body, Post, Get, Put, Patch, Delete, Query } from '@
 import { CitiesService } from './cities.service';
 import { CreateCityDto } from './dto/create-city.dto';
 import { UpdateCityDto } from './dto/patch-city.dto';
-import { PaginationDto } from 'src/dto/pagination.dto';
+import { PaginationDto } from 'src/common/dto/pagination.dto';
 
 
 @Controller('city')

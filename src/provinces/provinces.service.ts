@@ -5,7 +5,7 @@ import { ProvincesEntity } from 'src/entities/provinces.entity';
 import { Repository } from 'typeorm';
 import { CreateProvinceDto } from './dto/create-province.dto';
 import { UpdateProvinceDto } from './dto/patch-province.dto';
-import { PaginationDto } from 'src/dto/pagination.dto';
+import { PaginationDto } from 'src/common/dto/pagination.dto';
 
 @Injectable()
 export class ProvincesService {

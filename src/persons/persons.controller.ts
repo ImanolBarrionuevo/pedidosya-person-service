@@ -2,7 +2,8 @@ import { Body, Controller, Get, Param, Post, Put, Patch, Delete, Query } from '@
 import { PersonsService } from './persons.service';
 import { CreatePersonDto } from './dto/create-person.dto';
 import { UpdatePersonDto } from './dto/patch-person.dto';
-import { PaginationDto } from 'src/dto/pagination.dto';
+import { PaginationDto } from 'src/common/dto/pagination.dto';
+import { PermissionsDecorator } from 'src/common/permissions.decorator';
 
 @Controller('person')
 export class PersonsController {
@@ -10,6 +11,7 @@ export class PersonsController {
     constructor(private personsService: PersonsService){}
 
     @Post()
+    @PermissionsDecorator()
     postPerson(@Body() createPersonDto:CreatePersonDto){
         return this.personsService.createPerson(createPersonDto)  
     }

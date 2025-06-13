@@ -3,7 +3,7 @@ import { CreateCountryDto } from './dto/create-country.dto';
 import { CountriesEntity } from 'src/entities/countries.entity';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm/dist/common';
-import { PaginationDto } from 'src/dto/pagination.dto';
+import { PaginationDto } from 'src/common/dto/pagination.dto';
 
 @Injectable()
 export class CountriesService {

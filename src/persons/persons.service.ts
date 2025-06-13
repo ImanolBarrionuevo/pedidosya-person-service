@@ -5,7 +5,7 @@ import { PersonsEntity } from 'src/entities/persons.entity';
 import { Repository } from 'typeorm';
 import { UpdatePersonDto } from './dto/patch-person.dto';
 import { CitiesEntity } from 'src/entities/cities.entity';
-import { PaginationDto } from 'src/dto/pagination.dto';
+import { PaginationDto } from 'src/common/dto/pagination.dto';
 
 @Injectable()
 export class PersonsService {

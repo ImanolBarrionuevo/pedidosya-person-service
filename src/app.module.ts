@@ -7,6 +7,9 @@ import { entities } from './entities';
 import { CitiesModule } from './cities/cities.module';
 import { CountriesModule } from './countries/countries.module';
 import { ProvincesModule } from './provinces/provinces.module';
+import { HttpModule } from '@nestjs/axios';
+import { PermissionsGuard } from './common/permissions.guard';
+import { APP_GUARD } from '@nestjs/core';
 
 
 
@@ -21,8 +24,15 @@ import { ProvincesModule } from './provinces/provinces.module';
     entities: [__dirname + '/**/*.entity{.ts,.js}'],
   }),
   TypeOrmModule.forFeature(entities),
-  PersonsModule, CitiesModule, CountriesModule, ProvincesModule],
+  PersonsModule, CitiesModule, CountriesModule, ProvincesModule,
+  HttpModule.register({ 
+    baseURL: 'http://auth:3001', 
+    timeout: 3000 
+  })],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, {
+      provide: APP_GUARD,
+      useClass: PermissionsGuard,
+    }],
 })
 export class AppModule {}
