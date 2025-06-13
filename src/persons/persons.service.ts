@@ -46,7 +46,7 @@ export class PersonsService {
             relations: ['city', 'city.province', 'city.province.country'],
         });
         if (!person) {
-            throw new NotFoundException("Persona no encontrada");
+            throw new NotFoundException("Person Not Found");
         }
         return person
     }
@@ -58,7 +58,7 @@ export class PersonsService {
     async partialUpdatePerson(id: number, updatePersonDto: UpdatePersonDto) {
         const person = await this.personsRepository.findOne({ where: { id: id } })
         if (!person) {
-            throw new NotFoundException("Persona no encontrada");
+            throw new NotFoundException("Person Not Found");
         }
         if (updatePersonDto.city) {
             const cityEntity = await this.citiesRepository.findOne({ where: { id: updatePersonDto.city.id } });
@@ -67,7 +67,6 @@ export class PersonsService {
             }
         }
         // Actualiza las propiedades simples que el DTO puede tener.
-        // Puedes usar Object.assign para las propiedades simples que no sean relaciones.
         Object.assign(person, updatePersonDto);
 
         // Guarda la entidad completa para que se actualicen tanto columnas simples como relaciones.

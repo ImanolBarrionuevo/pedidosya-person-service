@@ -44,7 +44,7 @@ export class CitiesService {
             relations: ["province", "province.country"]
         })
         if (!city) {
-            throw new NotFoundException("Ciudad no encontrada")
+            throw new NotFoundException("City Not Found")
         }
         return city
     }
@@ -55,13 +55,12 @@ export class CitiesService {
     }
 
     async partialUpdateCity(id: number, updateCityDto: UpdateCityDto) {
-        // Busca la ciudad en la base de datos
         const city = await this.citiesRepository.findOne({ where: { id } });
         if (!city) {
-            throw new NotFoundException("Ciudad no encontrada");
+            throw new NotFoundException("City Not Found");
         }
 
-        // Si se proporciona una provincia, buscar su entidad
+        // Si se proporciona una provincia, buscar su entidad.
         if (updateCityDto.province) {
             const provinceEntity = await this.provincesRepository.findOne({ where: { id: updateCityDto.province.id } });
             if (provinceEntity) {
@@ -69,10 +68,10 @@ export class CitiesService {
             }
         }
 
-        // Actualiza las propiedades simples que el DTO puede tener
+        // Actualiza las propiedades simples que el DTO puede tener.
         Object.assign(city, updateCityDto);
 
-        // Guarda la entidad completa para que se actualicen tanto columnas simples como relaciones
+        // Guarda la entidad completa para que se actualicen tanto columnas simples como relaciones.
         const updatedCity = await this.citiesRepository.save(city);
         return updatedCity;
     }

@@ -38,7 +38,7 @@ export class CountriesService {
     async findCountry(id: number) {
         const country = await this.countriesRepository.findOne({ where: { id: id } })
         if (!country) {
-            throw new NotFoundException("Pais no encontrado")
+            throw new NotFoundException("Country Not Found")
         }
         return country
     }
