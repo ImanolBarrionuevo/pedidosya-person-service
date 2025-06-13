@@ -11,7 +11,7 @@ export class PersonsController {
     constructor(private personsService: PersonsService){}
 
     @Post()
-    @PermissionsDecorator()
+    @PermissionsDecorator() //Implementar esto en todas las rutas
     postPerson(@Body() createPersonDto:CreatePersonDto){
         return this.personsService.createPerson(createPersonDto)  
     }
