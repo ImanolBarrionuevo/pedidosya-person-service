@@ -4,8 +4,8 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { PersonsEntity } from 'src/entities/persons.entity';
 import { Repository } from 'typeorm';
 import { UpdatePersonDto } from './dto/patch-person.dto';
-import { PaginationDto } from './dto/pagination-person.dto';
 import { CitiesEntity } from 'src/entities/cities.entity';
+import { PaginationDto } from 'src/dto/pagination.dto';
 
 @Injectable()
 export class PersonsService {

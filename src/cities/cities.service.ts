@@ -1,11 +1,11 @@
-import { BadRequestException, Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CitiesEntity } from 'src/entities/cities.entity';
 import { Repository } from 'typeorm';
 import { CreateCityDto } from './dto/create-city.dto';
 import { UpdateCityDto } from './dto/patch-city.dto';
-import { PaginationDto } from './dto/pagination-city.dto';
 import { ProvincesEntity } from 'src/entities/provinces.entity';
+import { PaginationDto } from 'src/dto/pagination.dto';
 
 @Injectable()
 export class CitiesService {

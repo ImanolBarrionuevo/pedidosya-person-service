@@ -2,7 +2,7 @@ import { Body, Controller, Get, Param, Post, Put, Patch, Delete, Query } from '@
 import { PersonsService } from './persons.service';
 import { CreatePersonDto } from './dto/create-person.dto';
 import { UpdatePersonDto } from './dto/patch-person.dto';
-import { PaginationDto } from './dto/pagination-person.dto';
+import { PaginationDto } from 'src/dto/pagination.dto';
 
 @Controller('person')
 export class PersonsController {
