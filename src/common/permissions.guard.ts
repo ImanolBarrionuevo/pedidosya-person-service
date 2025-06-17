@@ -17,6 +17,7 @@ export class PermissionsGuard implements CanActivate {
   ) { }
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
+    //Obtenemos los permisos requeridos definidos en el endpoint
     const requiredPerms = this.reflector.get<string[]>(
       PERMISSIONS_KEY,
       context.getHandler(),
@@ -25,6 +26,7 @@ export class PermissionsGuard implements CanActivate {
       return true;
     }
 
+    //Obtenemos request y validamos existencia del token
     const req = context.switchToHttp().getRequest();
     const authHeader = req.headers.authorization;
     if (!authHeader?.startsWith('Bearer ')) {
@@ -33,6 +35,7 @@ export class PermissionsGuard implements CanActivate {
 
     const token = authHeader.replace(/^Bearer\s+/i, '');
 
+    //Validamos si el token tiene los permisos necesarios
     try {
       const response$ = this.http.post('/can-do', {
         token,
@@ -41,13 +44,10 @@ export class PermissionsGuard implements CanActivate {
       const { data } = await firstValueFrom(response$);
 
       if (!data.allowed) {
-        throw new ForbiddenException(
-          `Acceso denegado: faltan permisos[${ requiredPerms.join(', ') }]`,
-        );
+        throw new ForbiddenException('Faltan permisos');
       }
       return true;
     } catch (err) {
-      console.error('Error en PermissionsGuard:', err?.response?.data || err);
       throw new ForbiddenException('Error validando permisos');
     }
   }
