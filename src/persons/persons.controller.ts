@@ -19,7 +19,7 @@ export class PersonsController {
 
     @Get()
     @PermissionsDecorator(Permissions.ReadPerson)
-    getCities(@Query() paginationDto: PaginationDto) {
+    getPersons(@Query() paginationDto: PaginationDto) {
         return this.personsService.findPersons(paginationDto)
     }
 
