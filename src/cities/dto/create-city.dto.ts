@@ -1,5 +1,5 @@
 import { Transform } from 'class-transformer';
-import { IsString, IsNumber, IsNotEmpty, IsDefined } from 'class-validator';
+import { IsString, IsNotEmpty, IsDefined } from 'class-validator';
 
 export class CreateCityDto{
     @IsNotEmpty({ message: 'El nombre es obligatorio.' })
@@ -8,7 +8,6 @@ export class CreateCityDto{
 
     @IsDefined({message: 'El id de provincia es obligatorio.'}) 
     @IsNotEmpty({ message: 'El id de provincia no puede estar vacio.' })
-    //@IsNumber({}, { message: 'El id debe ser un número.' })
     @Transform(({ value }) => ({ id: value }))
     province: { id: number }
 }
