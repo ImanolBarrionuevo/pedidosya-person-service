@@ -4,8 +4,8 @@ import { CitiesEntity } from 'src/entities/cities.entity';
 import { Repository } from 'typeorm';
 import { CreateCityDto } from './dto/create-city.dto';
 import { UpdateCityDto } from './dto/patch-city.dto';
-import { ProvincesEntity } from 'src/entities/provinces.entity';
 import { PaginationDto } from 'src/common/dto/pagination.dto';
+import { ProvincesService } from 'src/provinces/provinces.service';
 
 @Injectable()
 export class CitiesService {
@@ -14,8 +14,8 @@ export class CitiesService {
     constructor(
         // Repositorio de CitiesEntity para operaciones CRUD en ciudades
         @InjectRepository(CitiesEntity) private citiesRepository: Repository<CitiesEntity>,
-        // Repositorio de ProvincesEntity para buscar una provincia especifica
-        @InjectRepository(ProvincesEntity) private provincesRepository: Repository<ProvincesEntity>) { }
+        // Servicio de Provinces para manejar operaciones relacionadas con provincias
+        private provincesService: ProvincesService) { }
 
     // Creamos una ciudad
     async createCity(city: CreateCityDto) {
@@ -77,10 +77,8 @@ export class CitiesService {
 
         // Si se proporciona una provincia, buscamos su entidad para asignarla a la ciudad
         if (updateCityDto.province) {
-            const provinceEntity = await this.provincesRepository.findOne({ where: { id: updateCityDto.province.id } });
-            if (provinceEntity) {
-                city.province = provinceEntity;
-            }
+            const provinceEntity = await this.provincesService.findProvince(updateCityDto.province.id);
+            city.province = provinceEntity; // Asignamos la entidad de provincia a la ciudad
         }
 
         // Actualizamos las propiedades simples (no objetos) que el DTO puede tener.

@@ -4,8 +4,8 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { PersonsEntity } from 'src/entities/persons.entity';
 import { Repository } from 'typeorm';
 import { UpdatePersonDto } from './dto/patch-person.dto';
-import { CitiesEntity } from 'src/entities/cities.entity';
 import { PaginationDto } from 'src/common/dto/pagination.dto';
+import { CitiesService } from 'src/cities/cities.service';
 
 @Injectable()
 export class PersonsService {
@@ -13,8 +13,8 @@ export class PersonsService {
     constructor(
         // Repositorio de PersonsEntity para operaciones CRUD en personas
         @InjectRepository(PersonsEntity) private personsRepository: Repository<PersonsEntity>,
-        // Repositorio de ProvincesEntity para buscar una provincia especifica
-        @InjectRepository(CitiesEntity) private citiesRepository: Repository<CitiesEntity>) { }
+        // Service de cities para manejar operaciones relacionadas con ciudades
+        private citiesService: CitiesService) { }
 
     // Creamos una persona
     async createPerson(person: CreatePersonDto) {
@@ -78,10 +78,8 @@ export class PersonsService {
 
         // Si se proporciona una ciudad, buscamos su entidad para asignarla a la persona
         if (updatePersonDto.city) {
-            const cityEntity = await this.citiesRepository.findOne({ where: { id: updatePersonDto.city.id } });
-            if (cityEntity) {
-                person.city = cityEntity;
-            }
+            const cityEntity = await this.citiesService.findCity(updatePersonDto.city.id);
+            person.city = cityEntity; // Asignamos la entidad de ciudad a la persona
         }
         // Actualizamos las propiedades simples (no objetos) que el DTO puede tener.
         Object.assign(person, updatePersonDto);

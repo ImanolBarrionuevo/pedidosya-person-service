@@ -1,11 +1,11 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { CountriesEntity } from 'src/entities/countries.entity';
 import { ProvincesEntity } from 'src/entities/provinces.entity';
 import { Repository } from 'typeorm';
 import { CreateProvinceDto } from './dto/create-province.dto';
 import { UpdateProvinceDto } from './dto/patch-province.dto';
 import { PaginationDto } from 'src/common/dto/pagination.dto';
+import { CountriesService } from 'src/countries/countries.service';
 
 @Injectable()
 export class ProvincesService {
@@ -13,8 +13,8 @@ export class ProvincesService {
     constructor(
         // Repositorio de ProvincesEntity para operaciones CRUD en provincias
         @InjectRepository(ProvincesEntity) private provincesRepository: Repository<ProvincesEntity>,
-        // Repositorio de CountriesEntity para buscar un país especifica
-        @InjectRepository(CountriesEntity) private countriesRepository: Repository<CountriesEntity>
+        // Servicio de Countries para buscar un país especifico
+        private countriesService: CountriesService
     ) { }
 
     // Creamos una provincia
@@ -76,10 +76,8 @@ export class ProvincesService {
 
         // Si se proporciona un país, buscamos su entidad para asignarla a la provincia
         if (updateProvinceDto.country) {
-            const countryEntity = await this.countriesRepository.findOne({ where: { id: updateProvinceDto.country.id } });
-            if (countryEntity) {
-                province.country = countryEntity;
-            }
+            const countryEntity = await this.countriesService.findCountry(updateProvinceDto.country.id);
+            province.country = countryEntity; // Asignamos la entidad de país a la provincia
         }
 
         // Actualizamos las propiedades simples (no objetos) que el DTO puede tener.
