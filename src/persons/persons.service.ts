@@ -18,9 +18,15 @@ export class PersonsService {
 
     // Creamos una persona
     async createPerson(person: CreatePersonDto) {
-        const newPerson = this.personsRepository.create(person)
+        const cityEntity = await this.citiesService.findCity(person.city);
+        const newPerson = this.personsRepository.create({
+            name: person.name,
+            email: person.email,
+            birthDate: person.birthDate,
+            city: cityEntity, // Asignamos la entidad de ciudad a la nueva persona
+        })
         await this.personsRepository.insert(newPerson)
-        return await this.findPerson(newPerson.id)
+        return newPerson // Retornamos los datos de la persona creada y almacenada
     }
 
     // Buscamos todas las personas existentes en la base de datos junto a su ciudad, provincia y pais asociado
@@ -63,30 +69,37 @@ export class PersonsService {
     }
 
     // Actualizamos una persona
-    async updatePerson(id: number, updatePerson: CreatePersonDto) {
-        await this.personsRepository.update(id, updatePerson)
-        return this.findPerson(id)
+    async updatePerson(id: number, updatePersonDto: CreatePersonDto) {
+        const person = await this.findPerson(id)
+
+        // Actualizamos las propiedades simples (no objetos) que el DTO puede tener.
+        Object.assign(person, updatePersonDto);
+
+        // Buscamos la entidad de la ciudad para asignarla a la persona
+        const cityEntity = await this.citiesService.findCity(updatePersonDto.city);
+        person.city = cityEntity; // Asignamos la entidad de ciudad a la persona
+
+        await this.personsRepository.save(person)
+        return person
     }
 
     // Actualizamos parcialmente una persona
     async partialUpdatePerson(id: number, updatePersonDto: UpdatePersonDto) {
-        // Verificamos que exista una persona con el id que recibimos
-        const person = await this.personsRepository.findOne({ where: { id: id } })
-        if (!person) {
-            throw new NotFoundException("Person Not Found");
-        }
+        // Verificamos que exista una persona con el id que recibimos y la buscamos
+        const person = await this.findPerson(id);
 
-        // Si se proporciona una ciudad, buscamos su entidad para asignarla a la persona
-        if (updatePersonDto.city) {
-            const cityEntity = await this.citiesService.findCity(updatePersonDto.city.id);
-            person.city = cityEntity; // Asignamos la entidad de ciudad a la persona
-        }
         // Actualizamos las propiedades simples (no objetos) que el DTO puede tener.
         Object.assign(person, updatePersonDto);
 
+        // Si se proporciona una ciudad, buscamos su entidad para asignarla a la persona
+        if (updatePersonDto.city) {
+            const cityEntity = await this.citiesService.findCity(updatePersonDto.city);
+            person.city = cityEntity; // Asignamos la entidad de ciudad a la persona
+        }
+
         // Guardamos la entidad completa para que se actualicen tanto columnas simples como relaciones.
-        const updatedUser = await this.personsRepository.save(person);
-        return updatedUser;
+        await this.personsRepository.save(person);
+        return person;
     }
 
     // Eliminamos una persona

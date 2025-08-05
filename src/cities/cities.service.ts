@@ -19,9 +19,13 @@ export class CitiesService {
 
     // Creamos una ciudad
     async createCity(city: CreateCityDto) {
-        const newCity = await this.citiesRepository.create(city) 
+        const provinceEntity = await this.provincesService.findProvince(city.province)
+        const newCity = await this.citiesRepository.create({
+            name: city.name,
+            province: provinceEntity, // Asignamos la entidad de provincia a la nueva ciudad
+        }) 
         await this.citiesRepository.save(newCity)
-        return this.findCity(newCity.id) // Retornamos los datos de la ciudad creada y almacenada
+        return newCity // Retornamos los datos de la ciudad creada y almacenada
     }
 
     // Buscamos todas las ciudades existentes en la base de datos junto a su provincia y pais asociado
@@ -63,26 +67,32 @@ export class CitiesService {
 
     // Actualizamos una ciudad
     async updateCity(id: number, updateCity: CreateCityDto) {
-        await this.citiesRepository.update(id, updateCity)
-        return this.findCity(id) // Retornamos la ciudad actualizada
+        const cityEntity = await this.findCity(id); // Verificamos que exista una ciudad con el id que recibimos
+        // Actualizamos las propiedades simples (no objetos) que el DTO puede tener.
+        Object.assign(cityEntity, updateCity);
+
+        // Buscamos la entidad de la provincia para asignarla a la ciudad
+        const provinceEntity = await this.provincesService.findProvince(updateCity.province);
+        cityEntity.province = provinceEntity; // Asignamos la entidad de provincia a la ciudad
+
+        await this.citiesRepository.save(cityEntity);
+        return cityEntity;
     }
+    
 
     // Actualizamos parcialmente una ciudad
     async partialUpdateCity(id: number, updateCityDto: UpdateCityDto) {
         // Verificamos que exista una ciudad con el id que recibimos
-        const city = await this.citiesRepository.findOne({ where: { id: id } });
-        if (!city) {
-            throw new NotFoundException("City Not Found");
-        }
-
-        // Si se proporciona una provincia, buscamos su entidad para asignarla a la ciudad
-        if (updateCityDto.province) {
-            const provinceEntity = await this.provincesService.findProvince(updateCityDto.province.id);
-            city.province = provinceEntity; // Asignamos la entidad de provincia a la ciudad
-        }
+        const city = await this.findCity(id);
 
         // Actualizamos las propiedades simples (no objetos) que el DTO puede tener.
         Object.assign(city, updateCityDto);
+
+        // Si se proporciona una provincia, buscamos su entidad para asignarla a la ciudad
+        if (updateCityDto.province) {
+            const provinceEntity = await this.provincesService.findProvince(updateCityDto.province);
+            city.province = provinceEntity; // Asignamos la entidad de provincia a la ciudad
+        }
 
         // Guardamos la entidad completa para que se actualicen tanto columnas simples como relaciones.
         const updatedCity = await this.citiesRepository.save(city);

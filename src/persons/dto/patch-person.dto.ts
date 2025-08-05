@@ -15,6 +15,6 @@ export class UpdatePersonDto extends PartialType(CreatePersonDto) {
     birthDate?: Date;
 
     @IsNumber({}, { message: 'El ID de la ciudad debe ser numérico.' })
-    city?: { id: number };
+    city?: number;
 }
 

@@ -19,9 +19,13 @@ export class ProvincesService {
 
     // Creamos una provincia
     async createProvince(province: CreateProvinceDto) {
-        const newProvince = this.provincesRepository.create(province)
+        const countryEntity = await this.countriesService.findCountry(province.country);
+        const newProvince = this.provincesRepository.create({
+            name: province.name,
+            country: countryEntity
+        })
         await this.provincesRepository.save(newProvince)
-        return this.findProvince(newProvince.id)
+        return newProvince;
     }
 
     // Buscamos todas las provincias existentes en la base de datos junto a su país asociado
@@ -63,25 +67,31 @@ export class ProvincesService {
 
     // Actualizamos una provincia
     async updateProvince(id: number, updateProvince: CreateProvinceDto) {
-        await this.provincesRepository.update(id, updateProvince)
-        return this.findProvince(id)
+        const province = await this.findProvince(id);
+
+        // Actualizamos las propiedades simples (no objetos) que el DTO puede tener.
+        Object.assign(province, updateProvince);
+
+        // Buscamos la entidad del país para asignarla a la provincia
+        const countryEntity = await this.countriesService.findCountry(updateProvince.country);
+        province.country = countryEntity; // Asignamos la entidad de país a la provincia
+
+        await this.provincesRepository.save(province);
+        return province;
     }
 
     // Actualizamos parcialmente una provincia
     async partialUpdateProvince(id: number, updateProvinceDto: UpdateProvinceDto) {
-        const province = await this.provincesRepository.findOne({ where: { id } });
-        if (!province) {
-            throw new NotFoundException("Province Not Found");
-        }
-
-        // Si se proporciona un país, buscamos su entidad para asignarla a la provincia
-        if (updateProvinceDto.country) {
-            const countryEntity = await this.countriesService.findCountry(updateProvinceDto.country.id);
-            province.country = countryEntity; // Asignamos la entidad de país a la provincia
-        }
+        const province = await this.findProvince(id);
 
         // Actualizamos las propiedades simples (no objetos) que el DTO puede tener.
         Object.assign(province, updateProvinceDto);
+
+        // Si se proporciona un país, buscamos su entidad para asignarla a la provincia
+        if (updateProvinceDto.country) {
+            const countryEntity = await this.countriesService.findCountry(updateProvinceDto.country);
+            province.country = countryEntity; // Asignamos la entidad de país a la provincia
+        }
 
         // Guardamos la entidad completa para que se actualicen tanto columnas simples como relaciones.
         const updatedProvince = await this.provincesRepository.save(province);

@@ -9,5 +9,5 @@ export class UpdateCityDto extends PartialType(CreateCityDto) {
 
     @IsNotEmpty({ message: 'El id de provincia es obligatorio.' })
     @IsNumber({}, { message: 'El id debe ser un número.' })
-    province?: { id: number };
+    province?: number;
 }

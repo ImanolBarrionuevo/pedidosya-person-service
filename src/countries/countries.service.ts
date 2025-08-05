@@ -64,12 +64,9 @@ export class CountriesService {
     // Actualizamos un país
     async updateCountry(id: number, updateCountry: CreateCountryDto) {
         // Verificamos que exista el país a actualizar
-        const country = await this.countriesRepository.findOne({ where: { id: id } });
-        if (!country) {
-            throw new NotFoundException("Country Not Found");
-        }
+        const country = await this.findCountry(id);
         await this.countriesRepository.update(id, updateCountry)
-        return this.countriesRepository.findOne({ where: { id: id } })
+        return this.findCountry(id) // Retornamos el país actualizado
     }
 
     // Borramos un país
