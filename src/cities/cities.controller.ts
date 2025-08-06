@@ -1,3 +1,9 @@
+/**
+ * Controlador de ciudades para la API.
+ * Expone endpoints para crear, leer, actualizar y eliminar ciudades.
+ * Cada endpoint verifica los permisos necesarios mediante el decorador personalizado.
+ */
+
 import { Controller, Param, Body, Post, Get, Put, Patch, Delete, Query } from '@nestjs/common';
 import { CitiesService } from './cities.service';
 import { CreateCityDto } from './dto/create-city.dto';
@@ -9,47 +15,47 @@ import { PermissionsDecorator } from 'src/common/permissions.decorator';
 @Controller('city')
 export class CitiesController {
 
-    // Inyectamos el servicio de ciudad
+    // Inyecta el servicio de ciudades
     constructor(private citiesService: CitiesService) { }
 
-    // Creamos una ciudad
+    // Crea una nueva ciudad // Permiso: CREATE_CITY
     @Post()
-    @PermissionsDecorator(Permissions.CreateCity) // Verificamos si tiene permiso necesario
+    @PermissionsDecorator(Permissions.CreateCity)
     postCity(@Body() city: CreateCityDto) {
         return this.citiesService.createCity(city)
     }
 
-    // Obtenemos todas las ciudades
+    // Obtiene todas las ciudades, con paginación // Permiso: READ_CITY
     @Get()
-    @PermissionsDecorator(Permissions.ReadCity) // Verificamos si tiene permiso necesario
+    @PermissionsDecorator(Permissions.ReadCity)
     getCities(@Query() paginationDto: PaginationDto) {
         return this.citiesService.findCities(paginationDto)
     }
 
-    // Obtenemos una ciudad especifica
+    // Obtiene una ciudad específica por ID // Permiso: READ_CITY
     @Get(':id')
-    @PermissionsDecorator(Permissions.ReadCity) // Verificamos si tiene permiso necesario
+    @PermissionsDecorator(Permissions.ReadCity)
     getCity(@Param('id') id: number) {
         return this.citiesService.findCity(id)
     }
 
-    // Actualizamos una ciudad
+    // Actualiza una ciudad completamente por ID // Permiso: MODIFY_CITY
     @Put(':id')
-    @PermissionsDecorator(Permissions.ModifyCity) // Verificamos si tiene permiso necesario
+    @PermissionsDecorator(Permissions.ModifyCity)
     putCity(@Param('id') id: number, @Body() updateCity: CreateCityDto) {
         return this.citiesService.updateCity(id, updateCity)
     }
 
-    // Actualizamos parcialmente una ciudad
+    // Actualiza parcialmente una ciudad por ID // Permiso: MODIFY_CITY
     @Patch(':id')
-    @PermissionsDecorator(Permissions.ModifyCity) // Verificamos si tiene permiso necesario
+    @PermissionsDecorator(Permissions.ModifyCity)
     patchCity(@Param('id') id: number, @Body() updateCity: UpdateCityDto) {
         return this.citiesService.partialUpdateCity(id, updateCity)
     }
 
-    // Eliminamos una ciudad por id
+    // Elimina una ciudad por ID // Permiso: DELETE_CITY
     @Delete(':id')
-    @PermissionsDecorator(Permissions.DeleteCity) // Verificamos si tiene permiso necesario
+    @PermissionsDecorator(Permissions.DeleteCity)
     deleteCity(@Param('id') id: number) {
         return this.citiesService.deleteCity(id)
     }

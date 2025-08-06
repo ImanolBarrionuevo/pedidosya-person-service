@@ -1,3 +1,9 @@
+/**
+ * Controlador de personas para la API.
+ * Expone endpoints para crear, leer, actualizar y eliminar personas.
+ * Cada endpoint verifica los permisos necesarios mediante el decorador personalizado.
+ */
+
 import { Body, Controller, Get, Param, Post, Put, Patch, Delete, Query } from '@nestjs/common';
 import { PersonsService } from './persons.service';
 import { CreatePersonDto } from './dto/create-person.dto';
@@ -9,45 +15,45 @@ import { Permissions } from 'src/common/permissions.enum';
 @Controller('person')
 export class PersonsController {
 
-    // Inyectamos el servicio de persona
+    // Inyecta el servicio de personas
     constructor(private personsService: PersonsService) { }
 
-    // Creamos una persona
+    // Crea una nueva persona // Permiso: CREATE_PERSON
     @Post()
     @PermissionsDecorator(Permissions.CreatePerson)
     postPerson(@Body() createPersonDto: CreatePersonDto) {
         return this.personsService.createPerson(createPersonDto)
     }
 
-    // Obtenemos todos las personas
+    // Obtiene todas las personas, con paginación // Permiso: READ_PERSON
     @Get()
     @PermissionsDecorator(Permissions.ReadPerson)
     getPersons(@Query() paginationDto: PaginationDto) {
         return this.personsService.findPersons(paginationDto)
     }
 
-    // Obtenemos una persona especifica
+    // Obtiene una persona específica por ID // Permiso: READ_PERSON
     @Get(':id')
     @PermissionsDecorator(Permissions.ReadPerson)
     getPerson(@Param('id') idPerson: number) {
         return this.personsService.findPerson(idPerson)
     }
 
-    // Actualizamos una persona
+    // Actualiza completamente una persona por ID // Permiso: MODIFY_PERSON
     @Put(':id')
     @PermissionsDecorator(Permissions.ModifyPerson)
     putPerson(@Param('id') idPerson: number, @Body() updatePerson: CreatePersonDto) {
         return this.personsService.updatePerson(idPerson, updatePerson)
     }
 
-    // Actualizamos parcialmente una persona
+    // Actualiza parcialmente una persona por ID // Permiso: MODIFY_PERSON
     @Patch(':id')
     @PermissionsDecorator(Permissions.ModifyPerson)
     patchPerson(@Param('id') idPerson: number, @Body() partialUpdatePerson: UpdatePersonDto) {
         return this.personsService.partialUpdatePerson(idPerson, partialUpdatePerson)
     }
 
-    // Eliminamos una persona por id
+    // Elimina una persona por ID // Permiso: DELETE_PERSON
     @Delete(':id')
     @PermissionsDecorator(Permissions.DeletePerson)
     deletePerson(@Param('id') idPerson: number) {
