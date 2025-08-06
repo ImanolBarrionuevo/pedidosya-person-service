@@ -1,3 +1,9 @@
+/**
+ * Servicio de países para la API.
+ * Gestiona la lógica de negocio y operaciones CRUD sobre la entidad de países,
+ * incluyendo creación, búsqueda con paginación, actualización y eliminación.
+ */
+
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateCountryDto } from './dto/create-country.dto';
 import { CountriesEntity } from 'src/entities/countries.entity';
@@ -9,29 +15,30 @@ import { PaginationDto } from 'src/common/dto/pagination.dto';
 export class CountriesService {
 
     constructor(
-        // Repositorio de CitiesEntity para operaciones CRUD en ciudades
+        // Repositorio de CountriesEntity para operaciones CRUD en ciudades
         @InjectRepository(CountriesEntity) private countriesRepository: Repository<CountriesEntity>
     ) { }
 
-    // Creamos un pais
+    // Crea un nuevo país
     async createCountry(country: CreateCountryDto) {
-        // Verificamos que el pais no exista en la base de datos para crearlo
-        const existingCountry = await this.countriesRepository.findOne({where: {name: country.name}})
-        if(!existingCountry){
+        // Verifica que el pais no exista en la base de datos antes de crearlo
+        const existingCountry = await this.countriesRepository.findOne({ where: { name: country.name } })
+        // Si no existe, lo crea y lo guarda en la base de datos
+        if (!existingCountry) {
             const newCountry = this.countriesRepository.create(country)
             await this.countriesRepository.save(newCountry)
-            return newCountry
+            return newCountry;
         }
         throw new NotFoundException("Country already created")
     }
 
-    // Buscamos todos los paises existentes en la base de datos
+    // Busca todos los paises existentes en la base de datos
     async findAllCountries() {
         const countries = await this.countriesRepository.find()
-        return countries
+        return countries;
     }
 
-    // Buscamos los paises utilizando paginación
+    // Busca los paises utilizando paginación
     async findCountries(paginationDto: PaginationDto) {
         // Extraemos el número de página enviado en el DTO
         const currentPage = paginationDto.page
@@ -40,36 +47,34 @@ export class CountriesService {
             return this.findAllCountries()
         }
 
-        // Definimos el tamaño de la página y en caso de que no haya, usamos por defecto 10
-        const perPage = paginationDto.limit ?? 10
+        const perPage = paginationDto.limit ?? 10; // Define el tamaño de la página y, en caso de que no haya, usa 10 por defecto
 
-        // Buscamos las ciudades de una página en especifico
+        // Busca las ciudades de una página en especifico
         return await this.countriesRepository.find({
-            skip: (currentPage - 1) * perPage, // Calculamos cuantos registros omitir
-            take: perPage // Definimos cuantos registros obtener
+            skip: (currentPage - 1) * perPage, // Calcula cuantos registros debe omitir
+            take: perPage // Define cuantos registros obtener
         })
     }
 
-    // Buscamos un pais a traves de su id
+    // Busca un pais a traves de su ID
     async findCountry(id: number) {
         const country = await this.countriesRepository.findOne(
-            { where: { id: id } } // Devolvemos la ciudad cuyo id coincida con el id pasado como parametro
-        ) 
+            { where: { id: id } } // Devuelve la ciudad cuyo ID coincide con el ID que se pasa como parámetro
+        )
         if (!country) {
             throw new NotFoundException("Country Not Found")
         }
-        return country
+        return country;
     }
 
-    // Actualizamos un país
+    // Actualiza un país
     async updateCountry(id: number, updateCountry: CreateCountryDto) {
-        // Verificamos que exista el país a actualizar
-        const country = await this.findCountry(id);
+        const country = await this.findCountry(id); // Verifica que exista un país con el ID recibido y lo busca
         await this.countriesRepository.update(id, updateCountry)
-        return this.findCountry(id) // Retornamos el país actualizado
+        return this.findCountry(id) // Retorna el país actualizado
     }
 
-    // Borramos un país
+    // Elimina un país
     async deleteCountry(id: number) {
         await this.countriesRepository.delete(id)
         return { "message": "deleted" }

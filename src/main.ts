@@ -1,17 +1,16 @@
+/**
+ * Punto de entrada principal de la aplicación NestJS.
+ */
+
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
 
 async function bootstrap() {
-  // Crea la aplicación Nest usando AppModule como módulo raíz
-  const app = await NestFactory.create(AppModule);
-  // Habilita CORS para aceptar peticiones desde otros lugares
-  app.enableCors();
-  // Aplica la ValidationPipe globalmente
-  app.useGlobalPipes(new ValidationPipe());
-  // Inicia el servidor en el puerto definido o en 3000 por defecto
-  await app.listen(process.env.PORT ?? 3000);
+  const app = await NestFactory.create(AppModule); // Crea la aplicación Nest usando AppModule como módulo raíz
+  app.enableCors(); // Habilita CORS para aceptar peticiones desde otros lugares
+  app.useGlobalPipes(new ValidationPipe()); // Aplica la ValidationPipe globalmente
+  await app.listen(process.env.PORT ?? 3000); // Inicia el servidor en el puerto definido o en 3000 por defecto
 }
 
-// Ejecuta la función de arranque
-bootstrap();
+bootstrap(); // Ejecuta la función de arranque
