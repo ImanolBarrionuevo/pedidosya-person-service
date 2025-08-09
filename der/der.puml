@@ -1,0 +1,43 @@
+@startuml agenciaPublicidad
+
+hide circle
+
+entity Persons {
+    id **PK** : SERIAL
+    ---
+    name : VARCHAR(50)
+    ---
+    email : VARCHAR(50)
+    ---
+    birthDate : DATE
+    ---
+    cityId **FK** : INTEGER
+}
+
+entity Cities {
+    id **PK** : SERIAL
+    ---
+    nombre : VARCHAR(50)
+    ---
+    provinceId **FK** : INTEGER
+}
+
+entity Provinces {
+    id **PK** : SERIAL
+    ---
+    nombre : VARCHAR(50)
+    ---
+    countryId **FK** : INTEGER
+}
+
+entity Countries {
+    id **PK** : SERIAL
+    ---
+    nombre : VARCHAR(50)
+}
+
+Persons::cityId }|-right--||Cities::id
+Cities::provinceId }|-down--||Provinces::id
+Provinces::countryId }|-left--||Countries::id
+
+@enduml
