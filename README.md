@@ -56,8 +56,8 @@ To execute unit tests:
 
 ## 🔗 Related Repositories
 
-🔐 [Auth Service](https://github.com/ImanolBarrionuevo/pedidosya-auth-service): Handles authentication and JWT token issuance.
-🖥️ [User UI](https://github.com/ImanolBarrionuevo/pedidosya-user-ui): Frontend interface for user interaction.
+- 🔐 [Auth Service](https://github.com/ImanolBarrionuevo/pedidosya-auth-service): Handles authentication and JWT token issuance.
+- 🖥️ [User UI](https://github.com/ImanolBarrionuevo/pedidosya-user-ui): Frontend interface for user interaction.
 
 ## 👨‍💻 Credits
 
