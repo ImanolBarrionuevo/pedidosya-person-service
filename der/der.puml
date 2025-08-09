@@ -1,15 +1,15 @@
-@startuml agenciaPublicidad
+@startuml persons-service-der
 
 hide circle
 
 entity Persons {
     id **PK** : SERIAL
     ---
-    name : VARCHAR(50)
+    name : TEXT
     ---
-    email : VARCHAR(50)
+    email : TEXT
     ---
-    birthDate : DATE
+    birthDate : TEXT
     ---
     cityId **FK** : INTEGER
 }
@@ -17,7 +17,7 @@ entity Persons {
 entity Cities {
     id **PK** : SERIAL
     ---
-    nombre : VARCHAR(50)
+    name : TEXT
     ---
     provinceId **FK** : INTEGER
 }
@@ -25,7 +25,7 @@ entity Cities {
 entity Provinces {
     id **PK** : SERIAL
     ---
-    nombre : VARCHAR(50)
+    name : TEXT
     ---
     countryId **FK** : INTEGER
 }
@@ -33,7 +33,7 @@ entity Provinces {
 entity Countries {
     id **PK** : SERIAL
     ---
-    nombre : VARCHAR(50)
+    name : TEXT
 }
 
 Persons::cityId }|-right--||Cities::id
