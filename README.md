@@ -13,7 +13,7 @@ Microservice responsible for managing personal user data within the PedidosYa sy
 The following schema illustrates how personal and geographic data are structured and related:
 
 <p align="center">
-  <img src="/pedidosya-repositorios/pedidosya-person-service/der/der.png" width="400" alt="Entity Relationship Diagram">
+  <img src="/der/der.png" width="400" alt="Entity Relationship Diagram">
 </p>
 
 This service uses the following relational structure to manage personal and geographic data:
