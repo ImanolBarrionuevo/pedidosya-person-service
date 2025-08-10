@@ -7,9 +7,9 @@ entity Persons {
     ---
     name : TEXT
     ---
-    email : TEXT
+    birthDate : DATE
     ---
-    birthDate : TEXT
+    email : TEXT
     ---
     cityId **FK** : INTEGER
 }
